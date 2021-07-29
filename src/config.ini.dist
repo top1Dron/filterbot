@@ -1,0 +1,10 @@
+[bot_section]
+ADMINS=
+BOT_TOKEN=
+ip=
+
+[db_section]
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_DB=
+ 
