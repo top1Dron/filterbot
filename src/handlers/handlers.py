@@ -22,7 +22,7 @@ async def filter_messages(message: types.Message):
     for word in forbidden_words:
         if word.lower() in message.text.lower().split():
             await message.delete()
-            db_utils.delete_message(message_id=message.message_id)
+            db_utils.delete_message(message_id=message.message_id, chat_id=message.chat.id)
             await message.answer('Сообщение было удалено из-за наличия ненормативной лексики!')
             break
 
