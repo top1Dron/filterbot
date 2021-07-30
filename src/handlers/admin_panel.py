@@ -30,10 +30,10 @@ async def start_command(message: types.Message):
     except:
         is_private = True
     if is_private or message.from_user.id in chat_administrators:
-        if message.from_user.id not in ADMINS:
-            await message.reply(message_text)
-        else:
-            await message.reply(message_text, reply_markup=create_admin_start_menu())
+        # if message.from_user.id not in ADMINS:
+        #     await message.reply(message_text)
+        # else:
+        await message.reply(message_text, reply_markup=create_admin_start_menu())
 
 
 @dp.message_handler(lambda message: message.chat.id in db_utils.get_bot_groups(), commands=['stop'])
