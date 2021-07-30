@@ -1,7 +1,5 @@
 import functools
 import logging
-from os import lockf
-import re
 from typing import Union
 
 from aiogram.utils.exceptions import MessageToDeleteNotFound
@@ -11,11 +9,10 @@ from loader import bot
 from models import Group
 
 
-async def delete_old_messages_with_forbidden_words():
+async def delete_old_messages_with_forbidden_words(chat_id: Union[int, str]):
     forbidden_words = db_utils.get_forbidden_words()
     groups = db_utils.get_groups()
     for group in groups:
-        any_changes = False
         group_messages = db_utils.get_group_messages(group.chat_id)
         for message in group_messages:
             for word in forbidden_words:
@@ -30,14 +27,11 @@ async def delete_old_messages_with_forbidden_words():
                     except Exception as e:
                         logging.error(e)
                     db_utils.delete_message(message_id=message.message_id, chat_id=message.group.chat_id)
-                    any_changes = True
-
-        if any_changes:
-            await bot.send_message(chat_id=int(group.chat_id),
-                text=f'Произведена очистка чата от ненормативной лексики!')
-        else:
-            await bot.send_message(chat_id=int(group.chat_id),
-                text=f'На текущий момент чат чист от ненормативной лексики!')
+        await bot.send_message(chat_id=int(chat_id),
+            text=f'Произведена очистка всех чатов от ненормативной лексики!')
+        # else:
+        #     await bot.send_message(chat_id=int(group.chat_id),
+        #         text=f'На текущий момент чат чист от ненормативной лексики!')
 
 
 async def anti_flood(*args, **kwargs):
