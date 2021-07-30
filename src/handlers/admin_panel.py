@@ -38,6 +38,7 @@ async def start_command(message: types.Message):
 
 @dp.message_handler(lambda message: message.chat.id in db_utils.get_bot_groups(), commands=['stop'])
 async def stop_command(message: types.Message):
+    is_private = None
     try:
         chat_administrators = [admin.user.id for admin in await message.chat.get_administrators() if not admin.user.is_bot]
     except:
