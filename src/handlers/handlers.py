@@ -6,7 +6,7 @@ from loader import dp
 from utils import db_utils, misc
 
 
-@dp.message_handler(state=None)
+@dp.message_handler(lambda message: message.chat.id in db_utils.get_bot_groups(), state=None)
 @dp.throttled(misc.anti_flood, rate=1/1.5)
 async def filter_messages(message: types.Message):
     db_utils.create_message(
@@ -27,7 +27,7 @@ async def filter_messages(message: types.Message):
             break
 
 
-@dp.message_handler(CommandHelp())
+@dp.message_handler(lambda message: message.chat.id in db_utils.get_bot_groups(), CommandHelp())
 async def help_command(message: types.Message):
     help_message = 'Я бот-антиспам, фильтрую спам и ненормативную лексику.' \
         'Надеюсь на ваше понимание, уважайте друг друга.'

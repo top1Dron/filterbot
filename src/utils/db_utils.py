@@ -1,22 +1,29 @@
 from typing import Iterable, Union
 
-from aiogram.types import user
-
 from models import ForbiddenWord, Group, Message, AllowedWord
 
 
-def get_group(chat_id: int) -> Group:
+def get_group(chat_id: Union[int, str]) -> Group:
     return Group.get(Group.chat_id == str(chat_id))
 
 
-def get_bot_groups() -> Iterable[Group]:
+def get_groups() -> Iterable[Group]:
     return Group.select()
 
 
-def create_group(chat_id: int) -> Group:
+def get_bot_groups() -> Iterable[Group]:
+    return [int(group.chat_id) for group in get_groups()]
+
+
+def create_group(chat_id: Union[int, str]) -> Group:
     new_group = Group(chat_id=str(chat_id))
     new_group.save()
     return new_group
+
+
+def delete_group(chat_id: Union[int, str]) -> None:
+    group = get_group(chat_id=chat_id)
+    group.delete_instance()
 
 
 def create_message(chat_id: int, message_id: int, user_id: int, 
@@ -64,3 +71,18 @@ def get_forbidden_word(text: str) -> ForbiddenWord:
 
 def get_allowed_words() -> list[str]:
     return [i.text.lower() for i in AllowedWord.select()]
+
+
+if __name__ == '__main__':
+    w = AllowedWord(text='/start')
+    w.save()
+    w = AllowedWord(text='/stop')
+    w.save()
+    w = AllowedWord(text='/help')
+    w.save()
+    w = AllowedWord(text='Управление словами')
+    w.save()
+    w = AllowedWord(text='Удаление по ключевым словам')
+    w.save()
+    w = AllowedWord(text='Удаление сообщений пользователя')
+    w.save()
