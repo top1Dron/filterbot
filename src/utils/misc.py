@@ -43,10 +43,6 @@ async def delete_old_messages_with_forbidden_words():
 async def anti_flood(*args, **kwargs):
     m = args[0]
     username = m['from']['username']
-    if m.chat.title is not None:
-        await bot.send_message(m.chat.id, f"Пользователь {username} флудит в чате {m.chat.title}")
-    else:
-        await bot.send_message(m.chat.id, f"Пользователь {username} флудит в приватном чате")
     try:
         await bot.delete_message(m.chat.id, m.message_id)
     except MessageToDeleteNotFound:
