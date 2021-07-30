@@ -27,8 +27,8 @@ async def delete_old_messages_with_forbidden_words(chat_id: Union[int, str]):
                     except Exception as e:
                         logging.error(e)
                     db_utils.delete_message(message_id=message.message_id, chat_id=message.group.chat_id)
-        await bot.send_message(chat_id=int(chat_id),
-            text=f'Произведена очистка всех чатов от ненормативной лексики!')
+    await bot.send_message(chat_id=int(chat_id),
+        text=f'Произведена очистка всех чатов от ненормативной лексики!')
         # else:
         #     await bot.send_message(chat_id=int(group.chat_id),
         #         text=f'На текущий момент чат чист от ненормативной лексики!')
